@@ -1,0 +1,290 @@
+/**
+ *Representa una fecha mediante dia, mes y anio
+ *permite modificar y consultar sus valores.
+ *calcular diferencias entre fechas y realizar operaciones con días
+ *
+ *@author Alexander Perez Laguna
+ *@Version 1.0
+ *
+ */
+package icc;
+/** Crea una fecha inicial predeterminada
+ *
+ */
+public class Fecha{
+    private int dia;
+    private int mes; 
+    private int anio;
+    public Fecha(){
+	dia = 1;
+	mes = 1;
+	anio = 2000;
+    }
+    /**crea una fecha utilizando el dia mes y anio
+     *@param d dia de la fecha
+     *@param m mes de la fecha
+     *@param a anio de la fecha
+     *
+     */
+    public Fecha(int d, int m, int a){
+	dia = d;
+	mes = m;
+        anio = a;
+    }
+    /** Crea una fecha utilizando el dia, anio y nombre del mes
+     *@param d dia de la fecha
+     *@param m mes de la fecha
+     *@param nombreMes anio de la fecha
+     */
+    public Fecha(int d, int a, String nombreMes){
+	dia = d;
+	anio = a;
+	mes = obtenerNumeroMes(nombreMes);
+    }
+    /**
+     *Obtiene el dia de la fecha
+     *
+     *@return dia de la fecha
+     */
+    public int obternerDia() {
+	return dia;
+    }
+    /**
+     *obtiene el mes de la fecha
+     *
+     *@return mes de la fecha
+     */
+    public int obternerMes() {
+	return mes;
+    }
+    /**
+     *Obtiene el anio de la fecha
+     *
+     *@return anio de la fecha
+     */
+    public int obternerAnio() {
+	return anio;
+    }
+    /**
+     *Asigna un nuevo dia
+     *
+     *@param d nuevo dia
+     */
+    public void asignarDia(int d){
+	dia = d;
+    }
+    /**
+     *Asigna un nuevo mes
+     *
+     *@param m nuevo mes
+     */
+    public void asignarMes(int m){
+	mes = m;
+    }
+    /**
+     *Asigna un nuevo anio
+     *
+     *@param a nuevo anio
+     */
+    public void asignarAnio(int a){
+	anio = a;
+    }
+    /**
+     *Asigna nuevos vcalores a los campos de la fecha
+     *
+     *@param d nuevo día
+     *@param m nuevo mes
+     *@param a nuevo anio
+     *
+     */
+    public void asignarFecha(int d, int m, int a){
+	dia=d;
+	mes = m;
+	anio=a;
+    }
+    /**
+     *Determina si el anio es bisiesto
+     *
+     *@return da true si el anio es bisiesto y false si no lo es
+     *
+     */
+    public boolean esBisiesto(){
+	return (anio % 400 == 0) ||
+	    (anio % 4 == 0 && anio % 100 != 0);
+    }
+    /**
+     *Calcula la cantidad de días del mes
+     *@param m numero del mes
+     *@return cantidad de dias del mes
+     *
+     */
+    private int diasDelMes(int m){
+	if ( m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12) {
+	    return 31; 
+	}
+	if ( m == 4 || m == 6 || m == 9 || m == 11){
+	    return 30;
+	}
+	if ( m == 2){
+	    if (esBisiesto()){
+		return 29;
+	    } else {
+		return 28;
+	    }
+	}
+	return 0;
+    }
+    /**
+     *Convierte el nombre de un mes en su numero
+     *
+     * @param nombre nombre del mes
+     * @return numero correspodiente al mes o 0 si es invalido
+     */
+    public int obtenerNumeroMes(String nombre){
+	if (nombre.equals("enero"))
+	    return 1;
+	if (nombre.equals("febrero"))
+	    return 2;
+	if (nombre.equals("marzo"))
+	    return 3;
+	if (nombre.equals("abril"))
+	    return 4;
+	if (nombre.equals("mayo"))
+	    return 5;
+	if (nombre.equals("junio"))
+	    return 6;
+	if (nombre.equals("julio"))
+	    return 7;
+	if (nombre.equals("agosto"))
+	    return 8;
+	if (nombre.equals("septiembre"))
+	    return 9;
+	if (nombre.equals("octubre"))
+	    return 10;
+	if (nombre.equals("noviembre"))
+	    return 11;
+	if (nombre.equals("diciembre"))
+	    return 12;
+	return 0;
+    }
+    /**
+     *Obtiene el nombre correspodiente a un numero de mes.
+     *@param numero numero del mes
+     *@return nombre del mes o mensaje de error
+     */
+    public String obtenerNombreMes (int numero) {
+	if (numero == 1) return "enero";
+	if (numero == 2) return "febrero";
+        if (numero == 3) return "marzo";
+	if (numero == 4) return "abril";
+        if (numero == 5) return "mayo";
+	if (numero == 6) return "junio";
+	if (numero == 7) return "julio";
+        if (numero == 8) return "agosto";
+	if (numero == 9) return "septiembre";
+	if (numero == 10) return "octubre";
+	if (numero == 11) return "noviembre";
+	if (numero == 12) return "diciembre";
+	return "mes invalido";
+    }
+    /**
+     *calcula los dias transcurridos en el anio
+     *hasta la fecha actual
+     *
+     *@return cantidad de dias transcurridos
+     */
+    public int diasDelAnio(){
+	int total = dia;
+	for (int i = 1; i < mes; i++) {
+	    total = total + diasDelMes(i);
+	}
+	return total;
+    }
+    /**
+     *Calcula la cantidad total de dias transcurridos desde el anio 1 hasta la fecha actual
+     *
+     *@return cantidad total de dias
+     */
+    private int diasTotales(){
+	int aniosAnteriores = anio - 1;
+	int total = aniosAnteriores * 365;
+	total = total + aniosAnteriores / 4;
+	total = total - aniosAnteriores / 100;
+	total = total + aniosAnteriores / 400;
+	total = total + diasDelAnio();
+	return total;
+    }
+    /**
+     *Calcula la diferencia en dias entre la fecha actual y otra fecha
+     *
+     *@param otra fecha con la que se compara
+     *@return diferencia absoluta en dias
+     */
+    public int diferencia(Fecha otra){
+	int diferencia = diasTotales() - otra.diasTotales();
+	if (diferencia < 0) {
+	    diferencia = diferencia * -1;
+	}
+	return diferencia;
+    }
+    /**
+     *Crea una nueva fecha sumando o restando
+     *una cantidad determinada de días 
+     *@param cantidad numero de dias a sumar o restar
+     *@return nueva fecha resultante
+     *
+     */
+    public Fecha sumarDias (int cantidad){
+	Fecha nueva = new Fecha(dia, mes, anio);
+	while (cantidad > 0){
+	    nueva.dia++;
+	    if (nueva.dia > nueva.diasDelMes(nueva.mes)) {
+		nueva.dia = 1;
+		nueva.mes++;
+
+		if (nueva.mes > 12) {
+		    nueva.mes=1;
+		    nueva.anio++;
+		}
+	    }
+	    cantidad--;
+	}
+	while (cantidad < 0 ) {
+	    nueva.dia--;
+	    if (nueva.dia == 0){
+		nueva.mes--;
+		if(nueva.mes == 0){
+		    nueva.mes = 12;
+		    nueva.anio--;
+		}
+		nueva.dia = nueva.diasDelMes(nueva.mes);
+	    }
+	    cantidad++;
+	}
+	return nueva;
+    }
+    /**
+     *Compara si dos fechas tienen los mismos valores
+     *
+     *@param otra fecha que se desea comprar
+     *@return regresara true si son iguales y false si son diferentes
+     *
+     */
+    public boolean equals(Fecha otra) {
+	if (otra == null){
+	    return false;
+	}
+	return dia == otra.dia &&
+	    mes == otra.mes &&
+	    anio == otra.anio;
+    }
+    /**
+     *Representa la fecha como una cadena con el formato dd/mm/aaaa (mm en nombre del mes)
+     *
+     *@return fecha representada como texto
+     *
+     */
+    public String toString() {
+	return dia + "/" + obtenerNombreMes(mes) + "/" + anio;
+    }
+}
